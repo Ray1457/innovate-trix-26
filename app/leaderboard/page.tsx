@@ -2,9 +2,9 @@ import styles from "./leaderboard.module.css";
 
 export default function LeaderboardPage() {
   const rows = [
-    ["1", "Yovaan sethi", "99,99,999", "9,900h"],
+    ["1", "Yovaan Sethi", "99,99,999", "9,900h"],
     ["2", "Rishit Narang", "89,34,998", "9,000h"],
-    ["3", "Aarav tulsani", "79,99,488", "8,700h"],
+    ["3", "Aarav Tulsani", "79,99,488", "8,700h"],
     ["4", "Xino", "65,99,400", "8,000h"],
     ["5", "Ordin", "59,65,300", "7,600h"],
     ["6", "Aneira", "39,93,399", "7,000h"],

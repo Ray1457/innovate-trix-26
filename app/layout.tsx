@@ -48,12 +48,12 @@ export default function RootLayout({
 
             <nav aria-label="Primary" className="hidden flex-1 items-center justify-center gap-14 md:flex lg:gap-16">
               {[
-                { Icon: IoCarOutline },
-                { Icon: IoGridOutline },
+                { Icon: IoCarOutline, ariaLabel: "Rides" },
+                { Icon: IoGridOutline, ariaLabel: "Services" },
                 { Icon: IoStatsChartOutline, href: "/leaderboard", ariaLabel: "Leaderboard" },
-                { Icon: IoMusicalNotesOutline },
-                { Icon: IoBagOutline },
-                { Icon: IoPersonOutline },
+                { Icon: IoMusicalNotesOutline, ariaLabel: "Music" },
+                { Icon: IoBagOutline, ariaLabel: "Orders" },
+                { Icon: IoPersonOutline, ariaLabel: "Profile" },
               ].map(({ Icon, href, ariaLabel }, index) => {
                 const iconClassName = index === 2 ? "h-8 w-8" : "h-7 w-7";
                 const commonClassName = "text-[var(--accent)] transform transition ease-in-out duration-300 cursor-pointer hover:scale-110 hover:opacity-80";
