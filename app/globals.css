@@ -1,20 +1,34 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Helvetica Now Display';
+  src: url('/font/HelveticaNowDisplay-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica Now Display Bold';
+  src: url('/font/HelveticaNowDisplay-ExtraBold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
 :root {
-  --background: #070411;
-  --foreground: #ede8ff;
-  --page-bg: #070411;
-  --page-text: #f3efff;
-  --headline: #c9c3e1;
-  --accent: #9f2eb8;
-  --copy: #eee9ff;
+  --text: #ddd9f5;
+--background: #060410;
+--primary: #88248c;
+--secondary: #9485e0;
+--accent: #d353b1;
+
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-helvetica: 'Helvetica Now Display';
+  --font-helvetica-bold : 'Helvetica Now Display Bold';
 }
 
 * {
@@ -43,15 +57,14 @@ button {
 
 @layer components {
   .glass-btn {
-    @apply inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium;
+    @apply inline-flex items-center justify-center rounded-full px-6 py-4 text-lg font-bold;
     color: var(--page-text);
     /* subtle glass gradient and border */
     @apply bg-gradient-to-b from-white/5 to-white/2 border border-white/10;
     /* shadow + inset highlight */
     @apply shadow-lg;
     /* backdrop blur */
-    @apply backdrop-blur-md;
-    -webkit-backdrop-filter: blur(6px);
+    @apply backdrop-blur-[5px];
     /* smoother interaction */
     @apply transform transition ease-in-out duration-200;
   }
