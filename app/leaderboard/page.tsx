@@ -29,14 +29,18 @@ export default function LeaderboardPage() {
               </thead>
 
               <tbody className="text-[var(--page-text)]">
-                {rows.map((r) => (
-                  <tr key={r[0]} className="border-t border-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.02)]">
-                    <td className="px-6 py-4 text-[#a45bcf]">{r[0]}</td>
-                    <td className="px-6 py-4 text-[var(--accent)]">{r[1]}</td>
-                    <td className="px-6 py-4">{r[2]}</td>
-                    <td className="px-6 py-4">{r[3]}</td>
-                  </tr>
-                ))}
+                {rows.map((row) => {
+                  const [rank, username, points, timeInMotion] = row;
+
+                  return (
+                    <tr key={rank} className="border-t border-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.02)]">
+                      <td className="px-6 py-4 text-[#a45bcf]">{rank}</td>
+                      <td className="px-6 py-4 text-[var(--accent)]">{username}</td>
+                      <td className="px-6 py-4">{points}</td>
+                      <td className="px-6 py-4">{timeInMotion}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
