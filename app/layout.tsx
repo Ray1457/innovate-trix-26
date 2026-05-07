@@ -48,31 +48,38 @@ export default function RootLayout({
 
             <nav aria-label="Primary" className="hidden flex-1 items-center justify-center gap-14 md:flex lg:gap-16">
               {[
-                IoGridOutline,
-                IoStatsChartOutline,
-                IoMusicalNotesOutline,
-                IoBagOutline,
-                IoCartOutline,
-                IoPersonOutline,
-              ].map((Icon, index) => {
-                const isStats = Icon === IoStatsChartOutline;
-                const inner = (
+                { Icon: IoCarOutline, ariaLabel: "Rides" },
+                { Icon: IoGridOutline, ariaLabel: "Services" },
+                { Icon: IoStatsChartOutline, href: "/leaderboard", ariaLabel: "Leaderboard" },
+                { Icon: IoMusicalNotesOutline, ariaLabel: "Music" },
+                { Icon: IoBagOutline, ariaLabel: "Orders" },
+                { Icon: IoPersonOutline, ariaLabel: "Profile" },
+              ].map(({ Icon, href, ariaLabel }, index) => {
+                const iconClassName = index === 2 ? "h-8 w-8" : "h-7 w-7";
+                const commonClassName = "text-[var(--accent)] transform transition ease-in-out duration-300 cursor-pointer hover:scale-110 hover:opacity-80";
+
+                if (href) {
+                  return (
+                    <Link
+                      key={index}
+                      href={href}
+                      className={commonClassName}
+                      aria-label={ariaLabel}
+                    >
+                      <Icon className={iconClassName} />
+                    </Link>
+                  );
+                }
+
+                return (
                   <button
                     key={index}
                     type="button"
-                    className="text-[var(--primary)] transform transition ease-in-out duration-300 cursor-pointer hover:scale-110 hover:opacity-80"
-                    aria-label={`Navigation item ${index + 1}`}
+                    className={commonClassName}
+                    aria-label={ariaLabel}
                   >
-                    <Icon className="h-8 w-8" />
+                    <Icon className={iconClassName} />
                   </button>
-                );
-
-                return isStats ? (
-                  <Link key={index} href="/leaderboard" aria-label="Leaderboard">
-                    {inner}
-                  </Link>
-                ) : (
-                  inner
                 );
               })}
             </nav>
