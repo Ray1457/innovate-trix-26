@@ -46,42 +46,46 @@ export default function RootLayout({
               Uber-Jo
             </Link>
 
-            <nav aria-label="Primary" className="hidden flex-1 items-center justify-center gap-14 md:flex lg:gap-16">
-              {[
-                { Icon: IoCarOutline, ariaLabel: "Rides" },
-                { Icon: IoGridOutline, ariaLabel: "Services" },
-                { Icon: IoStatsChartOutline, href: "/leaderboard", ariaLabel: "Leaderboard" },
-                { Icon: IoMusicalNotesOutline, ariaLabel: "Music" },
-                { Icon: IoBagOutline, ariaLabel: "Orders" },
-                { Icon: IoPersonOutline, ariaLabel: "Profile" },
-              ].map(({ Icon, href, ariaLabel }, index) => {
-                const iconClassName = index === 2 ? "h-8 w-8" : "h-7 w-7";
-                const commonClassName = "text-[var(--accent)] transform transition ease-in-out duration-300 cursor-pointer hover:scale-110 hover:opacity-80";
-
-                if (href) {
+            <nav
+              aria-label="Primary"
+              className="hidden flex-1 items-center justify-center gap-14 md:flex lg:gap-16"
+            >
+              {(() => {
+                const iconClassName =
+                  "text-[var(--primary)] transform transition ease-in-out duration-300 cursor-pointer hover:scale-110 hover:opacity-80";
+                return [
+                  { icon: IoGridOutline, label: "Explore" },
+                  { icon: IoStatsChartOutline, label: "Leaderboard", href: "/leaderboard" },
+                  { icon: IoMusicalNotesOutline, label: "Sound" },
+                  { icon: IoBagOutline, label: "Merch", href: "/merch" },
+                  { icon: IoCartOutline, label: "Cart" },
+                  { icon: IoPersonOutline, label: "Profile" },
+                ].map((item) => {
+                  const Icon = item.icon;
+                  if (item.href) {
+                    return (
+                      <Link
+                        key={item.label}
+                        href={item.href}
+                        aria-label={item.label}
+                        className={iconClassName}
+                      >
+                        <Icon className="h-8 w-8" />
+                      </Link>
+                    );
+                  }
                   return (
-                    <Link
-                      key={index}
-                      href={href}
-                      className={commonClassName}
-                      aria-label={ariaLabel}
+                    <button
+                      key={item.label}
+                      type="button"
+                      className={iconClassName}
+                      aria-label={item.label}
                     >
-                      <Icon className={iconClassName} />
-                    </Link>
+                      <Icon className="h-8 w-8" />
+                    </button>
                   );
-                }
-
-                return (
-                  <button
-                    key={index}
-                    type="button"
-                    className={commonClassName}
-                    aria-label={ariaLabel}
-                  >
-                    <Icon className={iconClassName} />
-                  </button>
-                );
-              })}
+                });
+              })()}
             </nav>
 
             <div className="w-8 md:w-12" />
