@@ -13,6 +13,7 @@ type MerchItem = {
   name: string;
   categoryId: string;
   description: string;
+  releasedAt: string;
   price: number;
   compareAt?: number;
   rating: number;
@@ -86,6 +87,7 @@ const merchData = {
       name: "Ember Ride Hoodie",
       categoryId: "apparel",
       description: "Ultra-soft fleece with reflective paneling and a relaxed drape.",
+      releasedAt: "2026-04-14",
       price: 82,
       compareAt: 96,
       rating: 4.8,
@@ -110,6 +112,7 @@ const merchData = {
       name: "Pulse Runner Tee",
       categoryId: "apparel",
       description: "Breathable mesh-knit tee built for heat-mapped commutes.",
+      releasedAt: "2026-05-02",
       price: 46,
       rating: 4.6,
       reviews: 144,
@@ -133,6 +136,7 @@ const merchData = {
       name: "Night Shift Sling",
       categoryId: "gear",
       description: "Compact carry with modular straps and glow trim.",
+      releasedAt: "2026-03-27",
       price: 68,
       rating: 4.7,
       reviews: 87,
@@ -155,6 +159,7 @@ const merchData = {
       name: "Ride Light Bottle",
       categoryId: "gear",
       description: "Insulated bottle with LED hydration cues and soft-touch grip.",
+      releasedAt: "2026-02-19",
       price: 32,
       rating: 4.5,
       reviews: 65,
@@ -177,6 +182,7 @@ const merchData = {
       name: "Capsule Enamel Pin Set",
       categoryId: "collectibles",
       description: "Three-piece pin set with ride map etchings and matte enamel.",
+      releasedAt: "2026-04-28",
       price: 24,
       rating: 4.9,
       reviews: 312,
@@ -199,6 +205,7 @@ const merchData = {
       name: "Aurora Ride Speaker",
       categoryId: "audio",
       description: "Pocket speaker with spatial bass tuned for open-air rides.",
+      releasedAt: "2026-05-06",
       price: 112,
       compareAt: 134,
       rating: 4.4,
@@ -290,7 +297,9 @@ export default function MerchPage() {
         sorted.sort((a, b) => b.rating - a.rating);
         break;
       case "newest":
-        sorted.sort((a, b) => b.stock - a.stock);
+        sorted.sort(
+          (a, b) => new Date(b.releasedAt).getTime() - new Date(a.releasedAt).getTime()
+        );
         break;
       default:
         break;
