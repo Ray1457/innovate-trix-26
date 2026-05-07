@@ -46,33 +46,37 @@ export default function RootLayout({
               Uber-Jo
             </Link>
 
-            <nav aria-label="Primary" className="hidden flex-1 items-center justify-center gap-14 md:flex lg:gap-16">
+            <nav
+              aria-label="Primary"
+              className="hidden flex-1 items-center justify-center gap-14 md:flex lg:gap-16"
+            >
               {[
-                IoGridOutline,
-                IoStatsChartOutline,
-                IoMusicalNotesOutline,
-                IoBagOutline,
-                IoCartOutline,
-                IoPersonOutline,
-              ].map((Icon, index) => {
-                const isStats = Icon === IoStatsChartOutline;
-                const inner = (
+                { icon: IoGridOutline, label: "Explore" },
+                { icon: IoStatsChartOutline, label: "Leaderboard", href: "/leaderboard" },
+                { icon: IoMusicalNotesOutline, label: "Sound" },
+                { icon: IoBagOutline, label: "Merch", href: "/merch" },
+                { icon: IoCartOutline, label: "Cart" },
+                { icon: IoPersonOutline, label: "Profile" },
+              ].map((item) => {
+                const Icon = item.icon;
+                const className =
+                  "text-[var(--primary)] transform transition ease-in-out duration-300 cursor-pointer hover:scale-110 hover:opacity-80";
+                if (item.href) {
+                  return (
+                    <Link key={item.label} href={item.href} aria-label={item.label} className={className}>
+                      <Icon className="h-8 w-8" />
+                    </Link>
+                  );
+                }
+                return (
                   <button
-                    key={index}
+                    key={item.label}
                     type="button"
-                    className="text-[var(--primary)] transform transition ease-in-out duration-300 cursor-pointer hover:scale-110 hover:opacity-80"
-                    aria-label={`Navigation item ${index + 1}`}
+                    className={className}
+                    aria-label={item.label}
                   >
                     <Icon className="h-8 w-8" />
                   </button>
-                );
-
-                return isStats ? (
-                  <Link key={index} href="/leaderboard" aria-label="Leaderboard">
-                    {inner}
-                  </Link>
-                ) : (
-                  inner
                 );
               })}
             </nav>
