@@ -64,7 +64,7 @@ export default function RootLayout({
                       key={index}
                       href={href}
                       className={commonClassName}
-                      aria-label={ariaLabel ?? `Navigation item ${index + 1}`}
+                      aria-label={ariaLabel}
                     >
                       <Icon className={iconClassName} />
                     </Link>
@@ -76,7 +76,7 @@ export default function RootLayout({
                     key={index}
                     type="button"
                     className={commonClassName}
-                    aria-label={ariaLabel ?? `Navigation item ${index + 1}`}
+                    aria-label={ariaLabel}
                   >
                     <Icon className={iconClassName} />
                   </button>
