@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import {
   IoBagOutline,
-  IoCarOutline,
+  IoCartOutline,
   IoGridOutline,
   IoMusicalNotesOutline,
   IoPersonOutline,
@@ -36,7 +36,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-black text-[var(--text)]">
         <header className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-2 pt-5 sm:px-6 lg:px-8 lg:pt-8">
           <div className="flex items-center justify-between">
             <Link
@@ -48,22 +48,33 @@ export default function RootLayout({
 
             <nav aria-label="Primary" className="hidden flex-1 items-center justify-center gap-14 md:flex lg:gap-16">
               {[
-                IoCarOutline,
                 IoGridOutline,
                 IoStatsChartOutline,
                 IoMusicalNotesOutline,
                 IoBagOutline,
+                IoCartOutline,
                 IoPersonOutline,
-              ].map((Icon, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  className="text-[var(--accent)] transform transition ease-in-out duration-300 cursor-pointer hover:scale-110 hover:opacity-80"
-                  aria-label={`Navigation item ${index + 1}`}
-                >
-                  <Icon className={index === 2 ? "h-8 w-8" : "h-7 w-7"} />
-                </button>
-              ))}
+              ].map((Icon, index) => {
+                const isStats = Icon === IoStatsChartOutline;
+                const inner = (
+                  <button
+                    key={index}
+                    type="button"
+                    className="text-[var(--primary)] transform transition ease-in-out duration-300 cursor-pointer hover:scale-110 hover:opacity-80"
+                    aria-label={`Navigation item ${index + 1}`}
+                  >
+                    <Icon className="h-8 w-8" />
+                  </button>
+                );
+
+                return isStats ? (
+                  <Link key={index} href="/leaderboard" aria-label="Leaderboard">
+                    {inner}
+                  </Link>
+                ) : (
+                  inner
+                );
+              })}
             </nav>
 
             <div className="w-8 md:w-12" />
