@@ -48,22 +48,40 @@ export default function RootLayout({
 
             <nav aria-label="Primary" className="hidden flex-1 items-center justify-center gap-14 md:flex lg:gap-16">
               {[
-                IoCarOutline,
-                IoGridOutline,
-                IoStatsChartOutline,
-                IoMusicalNotesOutline,
-                IoBagOutline,
-                IoPersonOutline,
-              ].map((Icon, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  className="text-[var(--accent)] transform transition ease-in-out duration-300 cursor-pointer hover:scale-110 hover:opacity-80"
-                  aria-label={`Navigation item ${index + 1}`}
-                >
-                  <Icon className={index === 2 ? "h-8 w-8" : "h-7 w-7"} />
-                </button>
-              ))}
+                { Icon: IoCarOutline },
+                { Icon: IoGridOutline },
+                { Icon: IoStatsChartOutline, href: "/leaderboard", ariaLabel: "Leaderboard" },
+                { Icon: IoMusicalNotesOutline },
+                { Icon: IoBagOutline },
+                { Icon: IoPersonOutline },
+              ].map(({ Icon, href, ariaLabel }, index) => {
+                const iconClassName = index === 2 ? "h-8 w-8" : "h-7 w-7";
+                const commonClassName = "text-[var(--accent)] transform transition ease-in-out duration-300 cursor-pointer hover:scale-110 hover:opacity-80";
+
+                if (href) {
+                  return (
+                    <Link
+                      key={index}
+                      href={href}
+                      className={commonClassName}
+                      aria-label={ariaLabel ?? `Navigation item ${index + 1}`}
+                    >
+                      <Icon className={iconClassName} />
+                    </Link>
+                  );
+                }
+
+                return (
+                  <button
+                    key={index}
+                    type="button"
+                    className={commonClassName}
+                    aria-label={ariaLabel ?? `Navigation item ${index + 1}`}
+                  >
+                    <Icon className={iconClassName} />
+                  </button>
+                );
+              })}
             </nav>
 
             <div className="w-8 md:w-12" />
