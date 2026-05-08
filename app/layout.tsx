@@ -59,7 +59,7 @@ export default function RootLayout({
                   { icon: IoMusicalNotesOutline, label: "Sound" },
                   { icon: IoBagOutline, label: "Merch", href: "/merch" },
                   { icon: IoCartOutline, label: "Cart", href: "/cart" },
-                  { icon: IoPersonOutline, label: "Profile" },
+                  { icon: IoPersonOutline, label: "Profile", href: "/account" },
                 ].map((item) => {
                   const Icon = item.icon;
                   if (item.href) {
