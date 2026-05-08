@@ -47,7 +47,7 @@ const moodOptions = [
 const timeOfDayOptions = ["Morning", "Afternoon", "Evening", "Night"];
 
 // Client-visible API URL (set via NEXT_PUBLIC_PLAYLIST_API_URL). Falls back to local route.
-const PLAYLIST_API_URL = process.env.PLAYLIST_API_URL ?? "http://localhost:8000/playlist";
+const PLAYLIST_API_URL = process.env.PLAYLIST_API_URL ?? "https://innovate-trix-back.vercel.app/playlist";
 
 const FALLBACK_POSTER_URL = "https://placehold.co/160x160?text=Sound";
 const FALLBACK_TRACK_DURATION_MS = 2 * 60 * 1000;
