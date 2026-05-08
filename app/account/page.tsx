@@ -24,16 +24,16 @@ export default function AccountPage() {
               <h4 className="text-2xl font-bold mb-4">Your Ride Presets</h4>
               <div className="grid grid-cols-2 gap-4">
                 <div className={`h-36 rounded-lg border border-white/10 ${styles.presetCell}`}>
-                  <div className="p-3">photo + combo<br />name</div>
+                  {/* <div className="p-3">photo + combo<br />name</div> */}
                 </div>
                 <div className={`h-36 rounded-lg border border-white/10 ${styles.presetCell}`}>
-                  <div className="p-3">photo + combo<br />name</div>
+                  {/* <div className="p-3">photo + combo<br />name</div> */}
                 </div>
                 <div className={`h-36 rounded-lg border border-white/10 ${styles.presetCell}`}>
-                  <div className="p-3">photo + combo<br />name</div>
+                  {/* <div className="p-3">photo + combo<br />name</div> */}
                 </div>
                 <div className={`h-36 rounded-lg border border-white/10 ${styles.presetCell}`}>
-                  <div className="p-3">photo + combo<br />name</div>
+                  {/* <div className="p-3">photo + combo<br />name</div> */}
                 </div>
               </div>
             </div>

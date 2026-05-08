@@ -84,25 +84,63 @@ const merchData = {
   ],
   items: [
     {
+      id: "jujo-hoodie",
+      sku: "UBJ-HOOD-JUJO",
+      name: "Jujo Hoodie",
+      categoryId: "apparel",
+      description: "Back-print pullover hoodie with vintage graphic.",
+      releasedAt: "2026-05-06",
+      price: 5999,
+      rating: 4.9,
+      reviews: 12,
+      colors: [],
+      sizes: ["XS", "S", "M", "L", "XL"],
+      stock: 24,
+      tags: ["New"],
+      shipping: { label: "Ships in 3-5 days", cost: 0 },
+      imageUrl: "/img/hoodie1.png",
+      image: {
+        label: "Jujo Hoodie",
+        gradient: "from-[#000000] via-[#2b2b2b] to-[#1a1a1a]",
+      },
+    },
+    {
+      id: "glimpse-hoodie",
+      sku: "UBJ-HOOD-GLIMPSE",
+      name: "Glimpse Hoodie",
+      categoryId: "apparel",
+      description: "Graphic back hoodie inspired by the Glimpse drop.",
+      releasedAt: "2026-05-06",
+      price: 6499,
+      rating: 4.8,
+      reviews: 9,
+      colors: [],
+      sizes: ["XS", "S", "M", "L", "XL"],
+      stock: 18,
+      tags: ["New"],
+      shipping: { label: "Ships in 3-5 days", cost: 0 },
+      imageUrl: "/img/hoodie2.png",
+      image: {
+        label: "Glimpse Hoodie",
+        gradient: "from-[#0b0b0b] via-[#2f2436] to-[#6f5cff]",
+      },
+    },
+    {
       id: "ember-hoodie",
       sku: "UBJ-HOOD-EMBER",
       name: "Ember Ride Hoodie",
       categoryId: "apparel",
       description: "Ultra-soft fleece with reflective paneling and a relaxed drape.",
       releasedAt: "2026-04-14",
-      price: 82,
-      compareAt: 96,
+      price: 5799,
+      compareAt: 6999,
       rating: 4.8,
       reviews: 218,
-      colors: [
-        { name: "Night", hex: "#1c1630" },
-        { name: "Ember", hex: "#a83b88" },
-        { name: "Plum", hex: "#533b7f" },
-      ],
+      colors: [],
       sizes: ["XS", "S", "M", "L", "XL"],
-      stock: 14,
+      stock: 0,
       tags: ["Best seller", "Limited"],
-      shipping: { label: "Ships in 3-5 days", cost: 0 },
+      shipping: { label: "Coming soon", cost: 0 },
       image: {
         label: "Hoodie",
         gradient: "from-[#1a0f2f] via-[#3b1a52] to-[#a84b97]",
@@ -115,18 +153,14 @@ const merchData = {
       categoryId: "apparel",
       description: "Breathable mesh-knit tee built for heat-mapped commutes.",
       releasedAt: "2026-05-02",
-      price: 46,
+      price: 5199,
       rating: 4.6,
       reviews: 144,
-      colors: [
-        { name: "Quartz", hex: "#e2d5ff" },
-        { name: "Midnight", hex: "#2e2349" },
-        { name: "Lavender", hex: "#b07cf6" },
-      ],
+      colors: [],
       sizes: ["XS", "S", "M", "L", "XL"],
-      stock: 32,
+      stock: 0,
       tags: ["New"],
-      shipping: { label: "Ships in 2-4 days", cost: 6 },
+      shipping: { label: "Coming soon", cost: 6 },
       image: {
         label: "Tee",
         gradient: "from-[#e6d8ff] via-[#b48cf0] to-[#542c7f]",
@@ -139,17 +173,14 @@ const merchData = {
       categoryId: "gear",
       description: "Compact carry with modular straps and glow trim.",
       releasedAt: "2026-03-27",
-      price: 68,
+      price: 5499,
       rating: 4.7,
       reviews: 87,
-      colors: [
-        { name: "Onyx", hex: "#14131d" },
-        { name: "Glow", hex: "#6f5cff" },
-      ],
+      colors: [],
       sizes: ["One Size"],
-      stock: 18,
+      stock: 0,
       tags: ["Gear pick"],
-      shipping: { label: "Ships tomorrow", cost: 0 },
+      shipping: { label: "Coming soon", cost: 0 },
       image: {
         label: "Sling",
         gradient: "from-[#140f20] via-[#34224a] to-[#6f5cff]",
@@ -162,17 +193,14 @@ const merchData = {
       categoryId: "gear",
       description: "Insulated bottle with LED hydration cues and soft-touch grip.",
       releasedAt: "2026-02-19",
-      price: 32,
+      price: 5299,
       rating: 4.5,
       reviews: 65,
-      colors: [
-        { name: "Frost", hex: "#d9f2ff" },
-        { name: "Violet", hex: "#7c58ff" },
-      ],
+      colors: [],
       sizes: ["20oz"],
       stock: 0,
       tags: ["Restock soon"],
-      shipping: { label: "Backorder", cost: 0 },
+      shipping: { label: "Coming soon", cost: 0 },
       image: {
         label: "Bottle",
         gradient: "from-[#dff5ff] via-[#9b9dff] to-[#5f47ff]",
@@ -185,17 +213,14 @@ const merchData = {
       categoryId: "collectibles",
       description: "Three-piece pin set with ride map etchings and matte enamel.",
       releasedAt: "2026-04-28",
-      price: 24,
+      price: 5399,
       rating: 4.9,
       reviews: 312,
-      colors: [
-        { name: "Galaxy", hex: "#1d1145" },
-        { name: "Halo", hex: "#f2b5ff" },
-      ],
+      colors: [],
       sizes: ["Set of 3"],
-      stock: 40,
+      stock: 0,
       tags: ["Collector"],
-      shipping: { label: "Ships in 3 days", cost: 5 },
+      shipping: { label: "Coming soon", cost: 5 },
       image: {
         label: "Pins",
         gradient: "from-[#1c103b] via-[#602c82] to-[#f1b6ff]",
@@ -208,18 +233,15 @@ const merchData = {
       categoryId: "audio",
       description: "Pocket speaker with spatial bass tuned for open-air rides.",
       releasedAt: "2026-05-06",
-      price: 112,
-      compareAt: 134,
+      price: 6999,
+      compareAt: 7999,
       rating: 4.4,
       reviews: 59,
-      colors: [
-        { name: "Polar", hex: "#e7f0ff" },
-        { name: "Indigo", hex: "#3741a3" },
-      ],
+      colors: [],
       sizes: ["One Size"],
-      stock: 7,
+      stock: 0,
       tags: ["Limited", "Tech"],
-      shipping: { label: "Ships in 5-7 days", cost: 0 },
+      shipping: { label: "Coming soon", cost: 0 },
       image: {
         label: "Speaker",
         gradient: "from-[#e5efff] via-[#8ea1ff] to-[#3e3fa4]",
@@ -229,9 +251,9 @@ const merchData = {
 };
 
 const formatCurrency = (value: number) =>
-  new Intl.NumberFormat("en-US", {
+  new Intl.NumberFormat("en-IN", {
     style: "currency",
-    currency: "USD",
+    currency: "INR",
     maximumFractionDigits: 0,
   }).format(value);
 
@@ -255,7 +277,7 @@ export default function MerchPage() {
   const [selections, setSelections] = useState<Record<string, MerchSelection>>(() =>
     merchData.items.reduce<Record<string, MerchSelection>>((acc, item) => {
       acc[item.id] = {
-        color: item.colors[0],
+        color: item.colors[0] ?? { name: "Default", hex: "#000000" },
         size: item.sizes[0],
       };
       return acc;
@@ -339,24 +361,17 @@ export default function MerchPage() {
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--text)] font-helvetica">
       <div className="mx-auto w-full max-w-6xl px-4 pb-20 pt-10 sm:px-6 lg:px-8">
-        <section className="rounded-3xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur sm:p-8">
+        {/* <section className="rounded-3xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur sm:p-8">
           <div className="flex h-48 items-center justify-center rounded-2xl border border-dashed border-white/30 bg-black/30 sm:h-64">
             <p className="text-xs uppercase tracking-[0.6em] text-[var(--secondary)] sm:text-sm">
               HERO IMAGE
             </p>
           </div>
-        </section>
+        </section> */}
 
         <section className="mt-12">
           <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-[var(--secondary)]">
-                Uber-Jo Merch
-              </p>
-              <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">
-                Drop essentials
-              </h2>
-            </div>
+                    {/* Color options removed per request */}
             <div className="rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.25em] text-[var(--secondary)]">
               {totalUnits} in cart
             </div>
@@ -378,14 +393,24 @@ export default function MerchPage() {
                   className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur"
                 >
                   <div
-                    className={`relative flex h-40 items-end justify-between overflow-hidden rounded-2xl bg-gradient-to-br ${item.image.gradient} p-4`}
+                    className={`relative flex h-72 items-end justify-between overflow-hidden rounded-2xl bg-gradient-to-br ${item.image.gradient} p-4`}
                   >
-                    <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/80">
-                      {item.image.label}
-                    </span>
-                    <span className="text-xs text-white/70">
-                      {isSoldOut ? "Sold out" : `${item.stock} left`}
-                    </span>
+                    {item.imageUrl ? (
+                      <img
+                        src={item.imageUrl}
+                        alt={item.image.label}
+                        className="absolute inset-0 h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : null}
+                    <div className="relative z-10 w-full flex items-end justify-between">
+                      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/80">
+                        {item.image.label}
+                      </span>
+                      <span className="text-xs text-white/70">
+                        {isSoldOut ? "Sold out" : `${item.stock} left`}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="mt-4 flex-1">
@@ -414,30 +439,7 @@ export default function MerchPage() {
                   </div>
 
                   <div className="mt-4 space-y-4">
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.2em] text-[var(--secondary)]">
-                        Color
-                      </p>
-                      <div className="mt-2 flex gap-2">
-                        {item.colors.map((color) => {
-                          const isActive = selection.color.name === color.name;
-                          return (
-                            <button
-                              key={color.name}
-                              type="button"
-                              onClick={() => updateSelection(item.id, { color })}
-                              className={`h-8 w-8 rounded-full border transition ${
-                                isActive
-                                  ? "border-[var(--accent)]/80 ring-2 ring-[var(--accent)]/50"
-                                  : "border-white/20 hover:border-[var(--accent)]/60"
-                              }`}
-                              style={{ backgroundColor: color.hex }}
-                              aria-label={`Select ${color.name} color`}
-                            />
-                          );
-                        })}
-                      </div>
-                    </div>
+                    {/* Color selection removed per request */}
                     <div>
                       <p className="text-xs uppercase tracking-[0.2em] text-[var(--secondary)]">
                         Size
@@ -496,7 +498,7 @@ export default function MerchPage() {
                           isSoldOut ? "cursor-not-allowed opacity-60" : ""
                         }`}
                       >
-                        {isSoldOut ? "Notify me" : "Add to cart"}
+                        {isSoldOut ? (item.shipping?.label === "Coming soon" ? "Coming soon" : "Notify me") : "Add to cart"}
                       </button>
                     )}
                   </div>

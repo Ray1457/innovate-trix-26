@@ -23,11 +23,12 @@ export default function LeaderboardPage() {
 
   return (
     <main className={`${styles.page} min-h-screen w-full`}>
+      <img src="/img/lb hero.png" alt="Leaderboard Hero" className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8" />
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8 text-center">
         <section className="mt-8">
           <div className="overflow-hidden rounded-lg border border-[rgba(255,255,255,0.06)]">
             <table className="w-full table-auto text-center" aria-label="Leaderboard rankings">
-              <thead className="text-sm text-[#a45bcf]">
+              <thead className="text-sm text-[var(--text)]">
                 <tr className="divide-x divide-[rgba(255,255,255,0.03)]">
                   <th className="px-6 py-4 w-20">Rank</th>
                   <th className="px-6 py-4">Username</th>
@@ -36,11 +37,11 @@ export default function LeaderboardPage() {
                 </tr>
               </thead>
 
-              <tbody className="text-[var(--page-text)]">
+              <tbody className="text-[var(--secondary)]">
                 {rows.map((row) => (
                   <tr key={row.id} className="border-t border-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.02)]">
-                    <td className="px-6 py-4 text-[#a45bcf]">{row.rank}</td>
-                    <td className="px-6 py-4 text-[var(--accent)]">{row.username}</td>
+                    <td className="px-6 py-4 ">{row.rank}</td>
+                    <td className="px-6 py-4 ">{row.username}</td>
                     <td className="px-6 py-4">{row.points}</td>
                     <td className="px-6 py-4">{row.timeInMotion}</td>
                   </tr>

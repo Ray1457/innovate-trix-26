@@ -54,7 +54,7 @@ export default function RootLayout({
                 const iconClassName =
                   "text-[var(--primary)] transform transition ease-in-out duration-300 cursor-pointer hover:scale-110 hover:opacity-80";
                 return [
-                  { icon: IoGridOutline, label: "Explore" },
+                  { icon: IoGridOutline, label: "Gallery", href: "/gallery" },
                   { icon: IoStatsChartOutline, label: "Leaderboard", href: "/leaderboard" },
                   { icon: IoMusicalNotesOutline, label: "Sound", href: "/sound" },
                   { icon: IoBagOutline, label: "Merch", href: "/merch" },
@@ -73,7 +73,7 @@ export default function RootLayout({
                         <Icon className="h-8 w-8" />
                       </Link>
                     );
-                  }
+                   }
                   return (
                     <button
                       key={item.label}
