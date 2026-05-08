@@ -29,10 +29,11 @@ export default function SoundPage() {
             aria-label="Mood input"
             className="h-11 rounded-full border border-white/15 bg-black/40 px-4 text-sm outline-none ring-[var(--secondary)] transition focus:ring-1"
           />
-          <button type="button" className="glass-btn h-11 px-6 text-sm">
+          <button type="button" disabled className="glass-btn h-11 px-6 text-sm opacity-70 cursor-not-allowed">
             Generate playlist
           </button>
         </form>
+        <p className="mt-2 text-xs text-white/60">Preview mode: generation and export actions are coming in a follow-up step.</p>
 
         <div className="mt-8 space-y-3">
           {starterTracks.map((track) => (
@@ -50,10 +51,10 @@ export default function SoundPage() {
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <button type="button" className="glass-btn h-10 px-5 text-sm">
+          <button type="button" disabled className="glass-btn h-10 px-5 text-sm opacity-70 cursor-not-allowed">
             Export to Spotify
           </button>
-          <button type="button" className="glass-btn h-10 px-5 text-sm">
+          <button type="button" disabled className="glass-btn h-10 px-5 text-sm opacity-70 cursor-not-allowed">
             Export to YouTube Music
           </button>
         </div>
