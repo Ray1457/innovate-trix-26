@@ -88,7 +88,15 @@ export default function RootLayout({
               })()}
             </nav>
 
-            <div className="w-8 md:w-12" />
+            <div className="w-8 md:w-12 flex items-center justify-end">
+              <Link
+                href="/account"
+                aria-label="Profile"
+                className="md:hidden text-[var(--primary)] transform transition ease-in-out duration-300 cursor-pointer hover:scale-110 hover:opacity-80"
+              >
+                <IoPersonOutline className="h-6 w-6" />
+              </Link>
+            </div>
           </div>
 
           <div className="pointer-events-none mt-2 h-px w-full bg-[rgba(171,151,223,0.25)]" />
