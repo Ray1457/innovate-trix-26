@@ -13,6 +13,7 @@ type Playlist = {
   id: string;
   name: string;
   vibe: string;
+  energy: number;
   tracks: Track[];
 };
 
@@ -32,12 +33,14 @@ const starterLibrary: Playlist[] = [
     id: "late-night-ride",
     name: "Late Night Ride",
     vibe: "moody synth cruise",
+    energy: 52,
     tracks: trackPool.slice(0, 4),
   },
   {
     id: "morning-boost",
     name: "Morning Boost",
     vibe: "upbeat focus",
+    energy: 78,
     tracks: trackPool.slice(4, 8),
   },
 ];
@@ -62,26 +65,36 @@ export default function SoundPage() {
     []
   );
 
-  const buildPlaylist = (vibePrompt: string, totalTracks: number): Playlist => {
+  const buildPlaylist = (
+    vibePrompt: string,
+    totalTracks: number,
+    energyLevel: number
+  ): Playlist => {
     const normalized = vibePrompt.toLowerCase();
-    const rotateBy = normalized.length % trackPool.length;
+    const playlistId = `generated-${Date.now()}`;
+    const rotateBy = (normalized.length + energyLevel) % trackPool.length;
     const orderedTracks = [...trackPool.slice(rotateBy), ...trackPool.slice(0, rotateBy)];
     const tracks = Array.from({ length: totalTracks }, (_, index) => {
       const track = orderedTracks[index % orderedTracks.length];
-      return { ...track, id: `${track.id}-${index}` };
+      return { ...track, id: `${track.id}-${playlistId}-${index}` };
     });
 
     return {
-      id: `generated-${Date.now()}`,
+      id: playlistId,
       name: `${toPlaylistName(vibePrompt)} Mix`,
       vibe: vibePrompt,
+      energy: energyLevel,
       tracks,
     };
   };
 
   const onGenerate = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const playlist = buildPlaylist(prompt.trim(), Math.min(Math.max(trackCount, 5), 30));
+    const playlist = buildPlaylist(
+      prompt.trim(),
+      Math.min(Math.max(trackCount, 5), 30),
+      energy
+    );
     setGenerated(playlist);
   };
 
@@ -89,7 +102,11 @@ export default function SoundPage() {
     if (!generated) {
       return;
     }
-    setLibrary((previous) => [generated, ...previous]);
+    setLibrary((previous) =>
+      previous.some((playlist) => playlist.id === generated.id)
+        ? previous
+        : [generated, ...previous]
+    );
   };
 
   return (
@@ -208,6 +225,7 @@ export default function SoundPage() {
               <div className="mt-4 space-y-3">
                 <p className="text-sm text-[var(--secondary)]">{generated.name}</p>
                 <p className="text-xs text-[var(--text)]/60">Vibe: {generated.vibe}</p>
+                <p className="text-xs text-[var(--text)]/60">Energy: {generated.energy}%</p>
                 <ul className="mt-3 space-y-2">
                   {generated.tracks.slice(0, 8).map((track, index) => (
                     <li
@@ -241,9 +259,14 @@ export default function SoundPage() {
                       <p className="text-sm font-semibold">{playlist.name}</p>
                       <p className="mt-1 text-xs text-[var(--text)]/60">{playlist.vibe}</p>
                     </div>
-                    <span className="text-xs text-[var(--accent)]">
-                      {playlist.tracks.length} tracks
-                    </span>
+                    <div className="text-right">
+                      <span className="block text-xs text-[var(--accent)]">
+                        {playlist.tracks.length} tracks
+                      </span>
+                      <span className="block text-[11px] text-[var(--text)]/55">
+                        {playlist.energy}% energy
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
