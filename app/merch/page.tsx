@@ -274,16 +274,11 @@ const loadCartItems = (): CartItem[] => {
 };
 
 export default function MerchPage() {
-  const [selections, setSelections] = useState<Record<string, MerchSelection>>(() =>
-    merchData.items.reduce<Record<string, MerchSelection>>((acc, item) => {
-      acc[item.id] = {
-        color: item.colors[0] ?? { name: "Default", hex: "#000000" },
-        size: item.sizes[0],
-      };
-      return acc;
-    }, {})
-  );
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const getDefaultSelection = (item: MerchItem): MerchSelection => ({
+    color: item.colors[0] ?? { name: "Default", hex: "#000000" },
+    size: item.sizes[0] ?? "One Size",
+  });
 
   useEffect(() => {
     setCartItems(loadCartItems());
@@ -298,16 +293,6 @@ export default function MerchPage() {
 
   const totalUnits = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-  const updateSelection = (id: string, nextSelection: Partial<MerchSelection>) => {
-    setSelections((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        ...nextSelection,
-      },
-    }));
-  };
-
   const getVariantKey = (item: MerchItem, selection: MerchSelection) =>
     `${item.id}-${selection.size}-${selection.color.name}`;
 
@@ -315,7 +300,7 @@ export default function MerchPage() {
     if (item.stock <= 0) {
       return;
     }
-    const selection = selections[item.id];
+    const selection = getDefaultSelection(item);
     const variantKey = getVariantKey(item, selection);
     setCartItems((prev) => {
       const existing = prev.find((cartItem) => cartItem.variantKey === variantKey);
@@ -356,156 +341,197 @@ export default function MerchPage() {
     );
   };
 
-  const gridItems = merchData.items.slice(0, 6);
+  const flagshipItems = merchData.items.filter((item) => item.stock > 0).slice(0, 2);
+  const comingSoonItems = merchData.items
+    .filter((item) => item.stock <= 0)
+    .slice(0, 3);
 
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--text)] font-helvetica">
       <div className="mx-auto w-full max-w-6xl px-4 pb-20 pt-10 sm:px-6 lg:px-8">
-        {/* <section className="rounded-3xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur sm:p-8">
-          <div className="flex h-48 items-center justify-center rounded-2xl border border-dashed border-white/30 bg-black/30 sm:h-64">
-            <p className="text-xs uppercase tracking-[0.6em] text-[var(--secondary)] sm:text-sm">
-              HERO IMAGE
-            </p>
-          </div>
-        </section> */}
-
-        <section className="mt-12">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-                    {/* Color options removed per request */}
-            <div className="rounded-full border border-white/10 px-4 py-2 text-xs uppercase tracking-[0.25em] text-[var(--secondary)]">
+        <section className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-transparent p-6 backdrop-blur sm:p-8">
+          <div className="flex flex-wrap items-center justify-between gap-6">
+            <div>
+              <p className="text-xs uppercase tracking-[0.4em] text-[var(--secondary)]">
+                {merchData.hero.eyebrow}
+              </p>
+              <h1 className="mt-3 text-3xl font-semibold text-[var(--text)] sm:text-4xl">
+                {merchData.hero.title}
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm text-[var(--text)]/70">
+                {merchData.hero.subtitle}
+              </p>
+            </div>
+            <div className="rounded-full border border-white/10 bg-black/20 px-4 py-2 text-xs uppercase tracking-[0.25em] text-[var(--secondary)]">
               {totalUnits} in cart
             </div>
           </div>
+          <div className="mt-6 flex flex-wrap gap-3 text-xs uppercase tracking-[0.2em] text-[var(--secondary)]">
+            {merchData.highlights.map((highlight) => (
+              <span
+                key={highlight.label}
+                className="rounded-full border border-white/10 bg-white/5 px-3 py-1"
+              >
+                {highlight.label}: {highlight.value}
+              </span>
+            ))}
+          </div>
+        </section>
 
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {gridItems.map((item) => {
-              const selection = selections[item.id];
-              const isSoldOut = item.stock <= 0;
-              const variantKey = getVariantKey(item, selection);
-              const cartItem = cartItems.find(
-                (entry) => entry.variantKey === variantKey
-              );
-              const quantity = cartItem?.quantity ?? 0;
+        <section className="mt-10 grid gap-6 lg:grid-cols-12 lg:auto-rows-[220px]">
+          {flagshipItems.map((item, index) => {
+            const selection = getDefaultSelection(item);
+            const variantKey = getVariantKey(item, selection);
+            const cartItem = cartItems.find(
+              (entry) => entry.variantKey === variantKey
+            );
+            const quantity = cartItem?.quantity ?? 0;
+            const isSoldOut = item.stock <= 0;
+            const span =
+              index === 0
+                ? "lg:col-span-7 lg:row-span-2"
+                : "lg:col-span-5 lg:row-span-2";
 
-              return (
-                <article
-                  key={item.id}
-                  className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur"
+            return (
+              <article
+                key={item.id}
+                className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur transition duration-300 ease-out hover:-translate-y-1 hover:border-white/20 ${span}`}
+              >
+                <div
+                  className={`relative flex flex-1 items-end justify-between overflow-hidden rounded-2xl bg-gradient-to-br ${item.image.gradient} p-4`}
                 >
-                  <div
-                    className={`relative flex h-72 items-end justify-between overflow-hidden rounded-2xl bg-gradient-to-br ${item.image.gradient} p-4`}
-                  >
-                    {item.imageUrl ? (
-                      <img
-                        src={item.imageUrl}
-                        alt={item.image.label}
-                        className="absolute inset-0 h-full w-full object-cover"
-                        loading="lazy"
-                      />
-                    ) : null}
-                    <div className="relative z-10 w-full flex items-end justify-between">
-                      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/80">
-                        {item.image.label}
-                      </span>
-                      <span className="text-xs text-white/70">
-                        {isSoldOut ? "Sold out" : `${item.stock} left`}
-                      </span>
+                  {item.imageUrl ? (
+                    <img
+                      src={item.imageUrl}
+                      alt={item.image.label}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : null}
+                  <div className="relative z-10 flex w-full items-end justify-between">
+                    <span className="rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[0.65rem] uppercase tracking-[0.35em] text-white/80">
+                      Flagship
+                    </span>
+                    <span className="text-xs text-white/70">
+                      {item.shipping.label}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-5 flex-1">
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="text-xl font-semibold text-[var(--text)]">
+                      {item.name}
+                    </h3>
+                    <div className="text-right text-sm font-semibold text-[var(--text)]">
+                      {formatCurrency(item.price)}
+                      {item.compareAt ? (
+                        <p className="text-xs text-[var(--text)]/50 line-through">
+                          {formatCurrency(item.compareAt)}
+                        </p>
+                      ) : null}
                     </div>
                   </div>
-
-                  <div className="mt-4 flex-1">
-                    <div className="flex items-start justify-between gap-3">
-                      <h3 className="text-lg font-semibold text-[var(--text)]">
-                        {item.name}
-                      </h3>
-                      <div className="text-right text-sm font-semibold text-[var(--text)]">
-                        {formatCurrency(item.price)}
-                        {item.compareAt ? (
-                          <p className="text-xs text-[var(--text)]/50 line-through">
-                            {formatCurrency(item.compareAt)}
-                          </p>
-                        ) : null}
-                      </div>
-                    </div>
-                    <p className="mt-2 text-sm text-[var(--text)]/70">
-                      {item.description}
-                    </p>
-                    <div className="mt-3 flex items-center justify-between text-xs text-[var(--secondary)]">
-                      <span>
-                        Rating {item.rating.toFixed(1)} ({item.reviews})
-                      </span>
-                      <span>{item.shipping.label}</span>
-                    </div>
+                  <p className="mt-2 text-sm text-[var(--text)]/70">
+                    {item.description}
+                  </p>
+                  <div className="mt-4 flex items-center justify-between text-xs text-[var(--secondary)]">
+                    <span>
+                      Rating {item.rating.toFixed(1)} ({item.reviews})
+                    </span>
+                    <span>{item.stock} left</span>
                   </div>
+                </div>
 
-                  <div className="mt-4 space-y-4">
-                    {/* Color selection removed per request */}
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.2em] text-[var(--secondary)]">
-                        Size
-                      </p>
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {item.sizes.map((size) => {
-                          const isActive = selection.size === size;
-                          return (
-                            <button
-                              key={size}
-                              type="button"
-                              onClick={() => updateSelection(item.id, { size })}
-                              className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] transition ${
-                                isActive
-                                  ? "border-[var(--accent)]/80 bg-[var(--accent)]/20 text-[var(--text)]"
-                                  : "border-white/15 text-[var(--text)]/70 hover:border-[var(--accent)]/60"
-                              }`}
-                            >
-                              {size}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                    {quantity > 0 ? (
-                      <div className="flex items-center justify-between rounded-full border border-white/10 bg-black/30 px-3 py-2">
-                        <button
-                          type="button"
-                          onClick={() => updateCartQuantity(variantKey, -1)}
-                          className="h-8 w-8 rounded-full border border-white/20 text-sm text-[var(--text)]/80 hover:border-[var(--accent)]/70"
-                          aria-label={`Decrease ${item.name} quantity`}
-                        >
-                          -
-                        </button>
-                        <span className="text-sm font-semibold">
-                          {quantity}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => updateCartQuantity(variantKey, 1)}
-                          disabled={isSoldOut}
-                          className={`h-8 w-8 rounded-full border border-white/20 text-sm text-[var(--text)]/80 hover:border-[var(--accent)]/70 ${
-                            isSoldOut ? "cursor-not-allowed opacity-60" : ""
-                          }`}
-                          aria-label={`Increase ${item.name} quantity`}
-                        >
-                          +
-                        </button>
-                      </div>
-                    ) : (
+                <div className="mt-5">
+                  {quantity > 0 ? (
+                    <div className="flex items-center justify-between rounded-full border border-white/10 bg-black/30 px-3 py-2">
                       <button
                         type="button"
-                        onClick={() => addToCart(item)}
+                        onClick={() => updateCartQuantity(variantKey, -1)}
+                        className="h-8 w-8 rounded-full border border-white/20 text-sm text-[var(--text)]/80 transition hover:border-[var(--accent)]/70"
+                        aria-label={`Decrease ${item.name} quantity`}
+                      >
+                        -
+                      </button>
+                      <span className="text-sm font-semibold">
+                        {quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => updateCartQuantity(variantKey, 1)}
                         disabled={isSoldOut}
-                        className={`glass-btn h-10 w-full text-sm font-semibold ${
+                        className={`h-8 w-8 rounded-full border border-white/20 text-sm text-[var(--text)]/80 transition hover:border-[var(--accent)]/70 ${
                           isSoldOut ? "cursor-not-allowed opacity-60" : ""
                         }`}
+                        aria-label={`Increase ${item.name} quantity`}
                       >
-                        {isSoldOut ? (item.shipping?.label === "Coming soon" ? "Coming soon" : "Notify me") : "Add to cart"}
+                        +
                       </button>
-                    )}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => addToCart(item)}
+                      disabled={isSoldOut}
+                      className={`glass-btn h-11 w-full text-sm font-semibold transition ${
+                        isSoldOut ? "cursor-not-allowed opacity-60" : ""
+                      }`}
+                    >
+                      {isSoldOut ? "Notify me" : "Add to cart"}
+                    </button>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+
+          {comingSoonItems.map((item) => (
+            <article
+              key={item.id}
+              className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur transition duration-300 ease-out hover:-translate-y-1 hover:border-white/20 lg:col-span-4"
+            >
+              <div
+                className={`relative flex h-32 items-end justify-between overflow-hidden rounded-2xl bg-gradient-to-br ${item.image.gradient} p-3`}
+              >
+                {item.imageUrl ? (
+                  <img
+                    src={item.imageUrl}
+                    alt={item.image.label}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                ) : null}
+                <span className="relative z-10 rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[0.6rem] uppercase tracking-[0.35em] text-white/80">
+                  Coming soon
+                </span>
+                <span className="relative z-10 text-[0.65rem] text-white/70">
+                  {item.shipping.label}
+                </span>
+              </div>
+              <div className="mt-4 flex-1">
+                <h3 className="text-base font-semibold text-[var(--text)]">
+                  {item.name}
+                </h3>
+                <p className="mt-2 text-xs text-[var(--text)]/70">
+                  {item.description}
+                </p>
+                <div className="mt-3 flex items-center justify-between text-xs text-[var(--secondary)]">
+                  <span>
+                    Rating {item.rating.toFixed(1)} ({item.reviews})
+                  </span>
+                  <span>{formatCurrency(item.price)}</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                disabled
+                className="mt-4 h-10 w-full rounded-full border border-white/10 bg-black/20 text-xs font-semibold uppercase tracking-[0.3em] text-[var(--secondary)]/70"
+              >
+                Coming soon
+              </button>
+            </article>
+          ))}
         </section>
       </div>
     </main>

@@ -27,30 +27,28 @@ export default function LeaderboardPage() {
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8 text-center">
         <section className="mt-8">
           <div className="overflow-hidden rounded-lg border border-[rgba(255,255,255,0.06)]">
-            <table className="w-full table-auto text-center" aria-label="Leaderboard rankings">
-              <thead className="text-sm text-[var(--text)]">
-                <tr className="divide-x divide-[rgba(255,255,255,0.03)]">
-                  <th className="px-6 py-4 w-20">Rank</th>
-                  <th className="px-6 py-4">Username</th>
-                  <th className="px-6 py-4">Points</th>
-                  <th className="px-6 py-4">Time in motion</th>
-                </tr>
-              </thead>
-
-              <tbody className="text-[var(--secondary)]">
+            {/* Header */}
+            <div className="flex text-sm text-[var(--text)] border-b border-[rgba(255,255,255,0.03)] mx-6">
+              <div className="px-6 py-4 w-20 flex-1">Rank</div>
+              <div className="px-6 py-4 flex-3">Username</div>
+              <div className="px-6 py-4 flex-1">Points</div>
+              <div className="px-6 py-4 flex-1">Time in motion</div>
+            </div>
+            {/* Body */}
+            <div className="text-[var(--secondary)]">
                 {rows.map((row) => (
-                  <tr key={row.id} className="border-t border-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.02)]">
-                    <td className="px-6 py-4 ">{row.rank}</td>
-                    <td className="px-6 py-4 ">{row.username}</td>
-                    <td className="px-6 py-4">{row.points}</td>
-                    <td className="px-6 py-4">{row.timeInMotion}</td>
-                  </tr>
+                <div key={row.id} className="flex border border-white/20 border-3 bg-white/5 my-4 backdrop-blur-md rounded-lg hover:bg-white/20 hover:shadow-lg  hover:scale-102 transition-ease-in-out transition-all duration-300 mx-6">
+                  <div className="px-6 py-4 flex-1">{row.rank}</div>
+                  <div className="px-6 py-4 flex-3">{row.username}</div>
+                  <div className="px-6 py-4 flex-1">{row.points}</div>
+                  <div className="px-6 py-4 flex-1">{row.timeInMotion}</div>
+                </div>
                 ))}
-              </tbody>
-            </table>
+            </div>
           </div>
         </section>
       </div>
     </main>
   );
 }
+
