@@ -46,11 +46,196 @@ const moodOptions = [
 
 const timeOfDayOptions = ["Morning", "Afternoon", "Evening", "Night"];
 
+const coverTileTransforms = [
+  "translate-y-1 -rotate-6",
+  "-translate-y-2 rotate-6",
+  "translate-y-3 rotate-3",
+  "-translate-y-1 -rotate-4",
+];
+
 // Client-visible API URL (set via NEXT_PUBLIC_API_BASE_URL environment variable)
 const PLAYLIST_API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://innovate-trix-back.vercel.app"}/playlist`;
 
 const FALLBACK_POSTER_URL = "https://placehold.co/160x160?text=Sound";
 const FALLBACK_TRACK_DURATION_MS = 2 * 60 * 1000;
+
+const sanitizeFileName = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/["'`]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+const escapeCsvValue = (value: string) => {
+  if (/[",\n]/.test(value)) {
+    return `"${value.replace(/"/g, '""')}"`;
+  }
+
+  return value;
+};
+
+const downloadTextFile = (fileName: string, content: string) => {
+  const fileBlob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+  const downloadUrl = URL.createObjectURL(fileBlob);
+  const anchor = document.createElement("a");
+
+  anchor.href = downloadUrl;
+  anchor.download = fileName;
+  anchor.rel = "noopener";
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+
+  window.setTimeout(() => {
+    URL.revokeObjectURL(downloadUrl);
+  }, 0);
+};
+
+const downloadPlaylistCsv = (playlist: Playlist) => {
+  const csvRows = [
+    ["Song Name", "Artist", "Duration"],
+    ...playlist.tracks.map(({ title, artist, duration }) => [
+      title,
+      artist,
+      duration,
+    ]),
+  ];
+
+  const csvContent = csvRows
+    .map((row) => row.map((cell) => escapeCsvValue(cell)).join(","))
+    .join("\r\n");
+  const fileName = `${sanitizeFileName(playlist.name) || "playlist"}.csv`;
+
+  downloadTextFile(fileName, csvContent);
+};
+
+const hashString = (value: string) => {
+  let hash = 0;
+
+  for (let index = 0; index < value.length; index += 1) {
+    hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
+  }
+
+  return hash;
+};
+
+const getCoverPalette = (playlist: Playlist) => {
+  const timeOfDayHue: Record<string, number> = {
+    Morning: 32,
+    Afternoon: 188,
+    Evening: 286,
+    Night: 226,
+  };
+  const seed = hashString(
+    `${playlist.id}-${playlist.mood}-${playlist.time_of_day}-${playlist.energy}`
+  );
+  const baseHue = (timeOfDayHue[playlist.time_of_day] ?? 220) + (seed % 24);
+  const accentHue = (baseHue + 58 + Math.round(playlist.energy / 3)) % 360;
+  const glowHue = (baseHue + 170) % 360;
+  const pulseHue = (baseHue + 120) % 360;
+
+  return {
+    backgroundColor: `hsl(${(baseHue + 12) % 360} 36% 10%)`,
+    backgroundImage: `radial-gradient(circle at 12% 18%, hsla(${accentHue}, 96%, 68%, 0.30), transparent 28%), radial-gradient(circle at 86% 24%, hsla(${glowHue}, 92%, 65%, 0.24), transparent 26%), radial-gradient(circle at 50% 88%, hsla(${pulseHue}, 90%, 60%, 0.18), transparent 32%), linear-gradient(145deg, hsl(${baseHue} 48% 18%) 0%, hsl(${(baseHue + 20) % 360} 44% 14%) 42%, hsl(${glowHue} 44% 9%) 100%)`,
+    glowOne: `hsla(${accentHue}, 96%, 68%, 0.45)`,
+    glowTwo: `hsla(${glowHue}, 92%, 65%, 0.38)`,
+    glowThree: `hsla(${pulseHue}, 90%, 60%, 0.30)`,
+  };
+};
+
+type PlaylistCoverProps = {
+  playlist: Playlist;
+};
+
+function PlaylistCover({ playlist }: PlaylistCoverProps) {
+  const palette = getCoverPalette(playlist);
+  const fallbackTrack: PlaylistTrack = {
+    id: `${playlist.id}-fallback`,
+    title: playlist.name,
+    artist: playlist.mood,
+    album: `${playlist.time_of_day} set`,
+    duration: playlist.totalDuration,
+    posterUrl: FALLBACK_POSTER_URL,
+  };
+  const coverTracks = Array.from({ length: 4 }, (_, index) =>
+    playlist.tracks[index] ?? fallbackTrack
+  );
+
+  return (
+    <div
+      className="relative isolate overflow-hidden rounded-[2rem] border border-white/10 p-4 shadow-2xl shadow-black/30 sm:p-5"
+      style={{
+        backgroundColor: palette.backgroundColor,
+        backgroundImage: palette.backgroundImage,
+      }}
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_45%)]" />
+      <div className="absolute inset-0 opacity-85">
+        <div
+          className="absolute left-[-8%] top-[-10%] h-44 w-44 rounded-full blur-3xl"
+          style={{ background: palette.glowOne }}
+        />
+        <div
+          className="absolute right-[-10%] top-[18%] h-56 w-56 rounded-full blur-3xl"
+          style={{ background: palette.glowTwo }}
+        />
+        <div
+          className="absolute inset-x-[18%] bottom-[-18%] h-36 rounded-full blur-3xl"
+          style={{ background: palette.glowThree }}
+        />
+      </div>
+
+      <div className="relative grid h-[18rem] grid-cols-2 grid-rows-2 gap-2 sm:h-[22rem] sm:gap-3">
+        {coverTracks.map((track, index) => (
+          <div
+            key={`${track.id}-${index}`}
+            className={`group relative overflow-hidden rounded-[1.75rem] border border-white/15 bg-white/10 shadow-2xl ${coverTileTransforms[index]}`}
+          >
+            <img
+              src={track.posterUrl}
+              alt={`${track.title} artwork`}
+              className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-4">
+              <p className="text-[10px] uppercase tracking-[0.35em] text-white/50">
+                Track {index + 1}
+              </p>
+              <p className="mt-1 truncate text-sm font-semibold text-white">
+                {track.title}
+              </p>
+              <p className="mt-1 truncate text-xs text-white/70">{track.artist}</p>
+            </div>
+          </div>
+        ))}
+
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-4">
+          <div className="relative flex w-full max-w-[16rem] flex-col items-center rounded-[2rem] border border-white/15 bg-black/50 px-5 py-5 text-center shadow-2xl backdrop-blur-2xl sm:max-w-[18rem] sm:px-6 sm:py-6">
+            <div className="absolute inset-3 rounded-[1.5rem] border border-white/10" />
+            <p className="text-[11px] uppercase tracking-[0.4em] text-white/55">
+              Soundscape
+            </p>
+            <h2 className="mt-3 text-2xl font-semibold leading-[0.95] text-white sm:text-3xl">
+              {playlist.name}
+            </h2>
+            <div className="mt-4 flex flex-wrap justify-center gap-2">
+              <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] uppercase tracking-[0.2em] text-white/70">
+                {playlist.mood}
+              </span>
+              <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] uppercase tracking-[0.2em] text-white/70">
+                {playlist.time_of_day}
+              </span>
+              <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] uppercase tracking-[0.2em] text-white/70">
+                {playlist.energy}% energy
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const formatTrackDuration = (milliseconds: number) => {
   const totalSeconds = Math.max(0, Math.round(milliseconds / 1000));
@@ -488,20 +673,20 @@ export default function SoundPage() {
         {activePlaylist ? (
           <div className="rounded-3xl border border-white/10 bg-black/30 p-6 sm:p-8">
             <div className="rounded-3xl border border-white/10 bg-[#0b0819] p-5 sm:p-7">
-              <div className="h-48 overflow-hidden rounded-2xl sm:h-56">
-                <img
-                  src={activePlaylist.tracks[0]?.posterUrl ?? FALLBACK_POSTER_URL}
-                  alt={`${activePlaylist.name} cover`}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                />
+              <PlaylistCover playlist={activePlaylist} />
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.28em] text-[var(--text)]/55">
+                    Generated mix
+                  </p>
+                  <h1 className="mt-2 text-4xl font-semibold text-white sm:text-5xl">
+                    {activePlaylist.name}
+                  </h1>
+                  <p className="mt-2 text-sm text-[var(--text)]/65">
+                    {activePlaylist.tracks.length} songs, {activePlaylist.totalDuration}
+                  </p>
+                </div>
               </div>
-              <h1 className="mt-6 text-4xl font-semibold text-white sm:text-5xl">
-                {activePlaylist.name}
-              </h1>
-              <p className="mt-2 text-sm text-[var(--text)]/65">
-                {activePlaylist.tracks.length} songs, {activePlaylist.totalDuration}
-              </p>
             </div>
 
             <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
@@ -515,8 +700,14 @@ export default function SoundPage() {
                 </button>
                 <button
                   type="button"
+                  onClick={() => {
+                    if (activePlaylist) {
+                      downloadPlaylistCsv(activePlaylist);
+                    }
+                  }}
                   className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--accent)]/70 text-[var(--accent)]"
                   aria-label="Download"
+                  title="Download CSV"
                 >
                   <IoArrowDownCircleOutline className="h-6 w-6" />
                 </button>
