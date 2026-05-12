@@ -1,18 +1,217 @@
 .cardPurple {
-  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
   border: 1px solid rgba(255,255,255,0.06);
   background-color: rgba(136,36,140,0.12);
 }
 
 .cardLight {
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
   border: 1px solid rgba(255,255,255,0.04);
   background-color: rgba(255,255,255,0.02);
 }
 
-.presetCell {
+.pageBackdrop {
+  position: relative;
+  overflow: hidden;
+}
+
+.pointsPill {
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.35);
+}
+
+.membershipCard {
+  background: rgba(12,10,22,0.9);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.membershipStats {
+  border-left: 1px solid rgba(255,255,255,0.08);
+  padding-left: 24px;
+}
+
+.rewardCard {
+  background: rgba(10,8,18,0.92);
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 25px 40px rgba(0,0,0,0.45);
+}
+
+.pointsPanel {
+  background: linear-gradient(135deg, rgba(136,36,140,0.22), rgba(211,83,177,0.12));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.rewardItem {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(7,6,16,0.6);
+  padding: 14px 16px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.rewardItem:hover {
+  transform: translateY(-2px);
+  border-color: rgba(211,83,177,0.5);
+}
+
+.rewardItemLocked {
+  opacity: 0.75;
+}
+
+.rewardMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rewardAction {
+  border-radius: 999px;
+  border: 1px solid rgba(211,83,177,0.45);
+  background: rgba(136,36,140,0.65);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+}
+
+.rewardActionLocked {
+  border-color: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: rgba(221,217,245,0.7);
+}
+
+.leaderboardPanel {
+  border-radius: 18px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(8,7,14,0.88);
+  min-width: 220px;
+}
+
+.leaderboardProgress {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 12px;
+}
+
+.progressBar {
+  margin-top: 10px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.1);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: inherit;
+  background: rgba(148,133,224,0.9);
+}
+
+.preferenceTag {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--secondary);
+  background: rgba(255,255,255,0.04);
+}
+
+.preferenceGroup {
+  margin: 16px 0;
+  border: 0;
+  padding: 0;
+}
+
+.preferenceLabel {
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 10px;
+}
+
+.preferenceOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.preferencePill {
+  position: relative;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  background: rgba(255,255,255,0.03);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.preferencePill span {
+  display: block;
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+
+.preferenceInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.preferenceInput:checked + span {
+  color: #111018;
+  background: linear-gradient(135deg, rgba(211,83,177,0.9), rgba(148,133,224,0.9));
+}
+
+.preferencePill:hover {
+  border-color: rgba(211,83,177,0.5);
+}
+
+.preferenceFooter {
+  display: flex;
   justify-content: flex-start;
-  background: rgba(0,0,0,0.15);
+  margin-top: 18px;
+}
+
+.saveButton {
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 10px 22px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: rgba(255,255,255,0.06);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.saveButton:hover {
+  border-color: rgba(211,83,177,0.5);
+  background: rgba(211,83,177,0.16);
+}
+
+.saveButtonSaved {
+  border-color: rgba(148,133,224,0.6);
+  background: rgba(148,133,224,0.2);
+}
+
+@media (max-width: 768px) {
+  .membershipStats {
+    border-left: none;
+    padding-left: 0;
+  }
 }

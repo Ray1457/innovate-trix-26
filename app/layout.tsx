@@ -36,6 +36,11 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preconnect" href="https://fonts.cdnfonts.com" />
+        <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/uber-move" />
+        <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/uber-move-text" />
+      </head>
       <body className="min-h-full flex flex-col bg-black text-[var(--text)]">
         <header className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-2 pt-5 sm:px-6 lg:px-8 lg:pt-8">
           <div className="flex items-center justify-between">

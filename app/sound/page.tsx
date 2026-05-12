@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   IoArrowDownCircleOutline,
   IoLogoYoutube,
@@ -52,6 +52,11 @@ const coverTileTransforms = [
   "translate-y-3 rotate-3",
   "-translate-y-1 -rotate-4",
 ];
+
+const STORAGE_KEYS = {
+  library: "sound_playlist_library",
+  activePlaylistId: "sound_playlist_active_id",
+} as const;
 
 // Client-visible API URL (set via NEXT_PUBLIC_API_BASE_URL environment variable)
 const PLAYLIST_API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://innovate-trix-back.vercel.app"}/playlist`;
@@ -308,6 +313,49 @@ export default function SoundPage() {
   const [exportMessage, setExportMessage] = useState<string | null>(null);
   const [activePlaylistId, setActivePlaylistId] = useState<string | null>(null);
   const [library, setLibrary] = useState<Playlist[]>([]);
+  const [hasHydrated, setHasHydrated] = useState(false);
+
+  useEffect(() => {
+    try {
+      const storedLibrary = localStorage.getItem(STORAGE_KEYS.library);
+      const parsedLibrary = storedLibrary ? JSON.parse(storedLibrary) : [];
+      const resolvedLibrary = Array.isArray(parsedLibrary) ? parsedLibrary : [];
+
+      setLibrary(resolvedLibrary);
+
+      const storedActiveId = localStorage.getItem(STORAGE_KEYS.activePlaylistId);
+      if (
+        storedActiveId &&
+        resolvedLibrary.some((playlist) => playlist.id === storedActiveId)
+      ) {
+        setActivePlaylistId(storedActiveId);
+        setScreen("playlist");
+      } else {
+        setActivePlaylistId(null);
+      }
+    } catch {
+      setLibrary([]);
+      setActivePlaylistId(null);
+    } finally {
+      setHasHydrated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hasHydrated) {
+      return;
+    }
+    try {
+      localStorage.setItem(STORAGE_KEYS.library, JSON.stringify(library));
+      if (activePlaylistId) {
+        localStorage.setItem(STORAGE_KEYS.activePlaylistId, activePlaylistId);
+      } else {
+        localStorage.removeItem(STORAGE_KEYS.activePlaylistId);
+      }
+    } catch {
+      // Ignore localStorage write errors (quota, private mode, etc.)
+    }
+  }, [library, activePlaylistId, hasHydrated]);
 
   const activePlaylist = useMemo(
     () => library.find((playlist) => playlist.id === activePlaylistId) ?? null,
@@ -493,7 +541,7 @@ export default function SoundPage() {
               <button
                 type="button"
                 onClick={startCreationFlow}
-                className="mt-6 inline-flex h-12 items-center justify-center rounded-full bg-[var(--accent)] px-8 text-sm font-semibold text-white transition hover:opacity-90"
+                className="mt-6 inline-flex h-12 items-center justify-center rounded-full bg-[var(--primary)] px-8 text-sm font-semibold text-white transition hover:opacity-90"
               >
                 Start creating
               </button>
@@ -505,7 +553,7 @@ export default function SoundPage() {
                 <button
                   type="button"
                   onClick={startCreationFlow}
-                  className="inline-flex h-10 items-center justify-center rounded-full border border-[var(--accent)]/70 px-5 text-sm font-semibold text-[var(--text)] transition hover:bg-[var(--accent)]/20"
+                  className="inline-flex h-10 items-center justify-center rounded-full border border-[var(--primary)]/70 px-5 text-sm font-semibold text-[var(--text)] transition hover:bg-[var(--primary)]/20"
                 >
                   Create another
                 </button>
@@ -516,7 +564,7 @@ export default function SoundPage() {
                     key={playlist.id}
                     type="button"
                     onClick={() => openPlaylist(playlist.id)}
-                    className="rounded-2xl border border-white/10 bg-[#0b0819] p-5 text-left transition hover:border-[var(--accent)]/60"
+                    className="rounded-2xl border border-white/10 bg-[#0b0819] p-5 text-left transition hover:border-[var(--primary)]/60"
                   >
                     <p className="text-lg font-semibold text-white">{playlist.name}</p>
                     <p className="mt-2 text-xs text-[var(--text)]/60">
@@ -543,14 +591,14 @@ export default function SoundPage() {
             <button
               type="button"
               onClick={goToPreviousStep}
-              className="text-sm text-[var(--secondary)] transition hover:text-[var(--accent)]"
+              className="text-sm text-[var(--secondary)] transition hover:text-[var(--primary)]"
             >
               Back
             </button>
             <p className="mt-4 text-xs uppercase tracking-[0.28em] text-[var(--secondary)]">
               Step {step} of 3
             </p>
-            <h1 className="mt-5 text-center text-5xl font-semibold leading-[0.95] text-[var(--accent)] sm:text-7xl">
+            <h1 className="mt-5 text-center text-5xl font-semibold leading-[0.95] text-[var(--primary)] sm:text-7xl">
               {getWizardTitle(step)}
             </h1>
           </div>
@@ -635,7 +683,7 @@ export default function SoundPage() {
                   void goToNextStep();
                 }}
                 disabled={isGenerating}
-                className="h-11 rounded-full bg-[var(--accent)] px-6 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                className="h-11 rounded-full bg-[var(--primary)] px-6 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {step === 3
                   ? isGenerating
@@ -664,7 +712,7 @@ export default function SoundPage() {
           <button
             type="button"
             onClick={startCreationFlow}
-            className="h-10 rounded-full bg-[var(--accent)] px-5 text-sm font-semibold text-white transition hover:opacity-90"
+            className="h-10 rounded-full bg-[var(--primary)] px-5 text-sm font-semibold text-white transition hover:opacity-90"
           >
             Create another
           </button>
@@ -693,7 +741,7 @@ export default function SoundPage() {
               <div className="flex items-center gap-3">
                 <button
                   type="button"
-                  className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[var(--accent)] text-white"
+                  className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[var(--primary)] text-white"
                   aria-label="Pause"
                 >
                   <IoPause className="h-6 w-6" />
@@ -705,7 +753,7 @@ export default function SoundPage() {
                       downloadPlaylistCsv(activePlaylist);
                     }
                   }}
-                  className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--accent)]/70 text-[var(--accent)]"
+                  className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--primary)]/70 text-[var(--primary)]"
                   aria-label="Download"
                   title="Download CSV"
                 >
@@ -713,7 +761,7 @@ export default function SoundPage() {
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--accent)]/70 text-[var(--accent)]"
+                  className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--primary)]/70 text-[var(--primary)]"
                   aria-label="Shuffle"
                 >
                   <IoSyncOutline className="h-6 w-6" />
@@ -787,7 +835,7 @@ export default function SoundPage() {
             <button
               type="button"
               onClick={openLibrary}
-              className="mt-5 h-11 rounded-full bg-[var(--accent)] px-6 text-sm font-semibold text-white"
+              className="mt-5 h-11 rounded-full bg-[var(--primary)] px-6 text-sm font-semibold text-white"
             >
               Back to library
             </button>

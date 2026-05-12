@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="relative flex flex-1 overflow-hidden bg-[var(--background)] text-[var(--text)] font-helvetica ">
@@ -23,15 +25,15 @@ export default function Home() {
 
             <div className="relative ml-auto flex w-full max-w-xs flex-col items-end pr-0 text-left sm:max-w-sm md:mr-24 md:pr-2 lg:mr-44">
               <p className="max-w-xs text-base leading-relaxed tracking-tighter text-[var(--text)] sm:text-lg mb-[-1rem]">
-                Welcome to Uber Jo — personalized rides that feel meaningful. Sign up to experience journeys beyond just getting there.
+                Welcome to Uber Jo — personalized rides that feel meaningful. Sign in to experience journeys beyond just getting there.
               </p>
 
-              <button
-                type="button"
+              <Link
+                href="/auth"
                 className="glass-btn inline-flex h-8 w-32 items-center justify-center font-bold tracking-tight text-[var(--text)] hover:-translate-y-0. mr-16"
               >
-                Sign Up
-              </button>
+                Login
+              </Link>
             </div>
           </div>
         </div>
