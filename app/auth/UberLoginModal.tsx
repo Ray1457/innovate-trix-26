@@ -21,7 +21,8 @@ export default function UberLoginModal() {
 
   const handleLogin = () => {
     document.cookie = `${AUTH_COOKIE}=1; Path=/; Max-Age=86400; SameSite=Lax`;
-    router.push(safeNext);
+    // router.push(safeNext);
+    window.location.href = safeNext;
   };
 
   const handleClose = () => {
