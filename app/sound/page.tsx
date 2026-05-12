@@ -741,13 +741,6 @@ export default function SoundPage() {
               <div className="flex items-center gap-3">
                 <button
                   type="button"
-                  className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[var(--primary)] text-white"
-                  aria-label="Pause"
-                >
-                  <IoPause className="h-6 w-6" />
-                </button>
-                <button
-                  type="button"
                   onClick={() => {
                     if (activePlaylist) {
                       downloadPlaylistCsv(activePlaylist);
@@ -758,13 +751,6 @@ export default function SoundPage() {
                   title="Download CSV"
                 >
                   <IoArrowDownCircleOutline className="h-6 w-6" />
-                </button>
-                <button
-                  type="button"
-                  className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--primary)]/70 text-[var(--primary)]"
-                  aria-label="Shuffle"
-                >
-                  <IoSyncOutline className="h-6 w-6" />
                 </button>
               </div>
 
